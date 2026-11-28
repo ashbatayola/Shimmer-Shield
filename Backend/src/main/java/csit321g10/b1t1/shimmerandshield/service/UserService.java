@@ -75,6 +75,7 @@ public class UserService {
             throw new ResourceNotFoundException("User not found with id " + id);
         }
         userRepository.deleteById(id);
+        userRepository.flush(); // surface FK violations here so they return 409
     }
 
     private UserEntity getOrThrow(Long id) {
