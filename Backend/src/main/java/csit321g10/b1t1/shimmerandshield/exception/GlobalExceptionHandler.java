@@ -21,6 +21,16 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), null);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(DuplicateServiceNameException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateService(DuplicateServiceNameException ex) {
+        return build(HttpStatus.CONFLICT, ex.getMessage(), null);
+    }
+
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicate(DuplicateEmailException ex) {
         return build(HttpStatus.CONFLICT, ex.getMessage(), null);
@@ -43,7 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleUnreadable(HttpMessageNotReadableException ex) {
         return build(HttpStatus.BAD_REQUEST,
-                "Malformed request body or invalid value (role must be CUSTOMER or STAFF)", null);
+                "Malformed request body or invalid value (check enums: role = CUSTOMER/STAFF, status = PENDING/CONFIRMED; dates use yyyy-MM-dd)", null);
     }
 
     // e.g. /api/users?role=ADMIN
