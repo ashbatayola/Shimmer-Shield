@@ -1,5 +1,9 @@
 package csit321g10.b1t1.shimmerandshield.exception;
 
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import java.time.Instant;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,11 +24,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), null);
-    }
-
-    @ExceptionHandler(DuplicateServiceNameException.class)
-    public ResponseEntity<Map<String, Object>> handleDuplicateService(DuplicateServiceNameException ex) {
-        return build(HttpStatus.CONFLICT, ex.getMessage(), null);
     }
 
     @ExceptionHandler(DuplicateEmailException.class)
@@ -53,7 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleUnreadable(HttpMessageNotReadableException ex) {
         return build(HttpStatus.BAD_REQUEST,
-                "Malformed request body or invalid value (check enums: role = CUSTOMER/STAFF, status = PENDING/CONFIRMED; dates use yyyy-MM-dd)", null);
+                "Malformed request body or invalid value (role must be CUSTOMER or STAFF)", null);
     }
 
     // e.g. /api/users?role=ADMIN
